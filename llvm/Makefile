@@ -19,7 +19,7 @@ prepare: llvm-${VER}.src
 fetch: llvm-${VER}.src
 
 llvm-${VER}.src: | llvm-${VER}.tar.gz
-	tar -xvf llvmorg-${VER}.tar.gz
+	tar -xvf llvm-${VER}.tar.gz
 
 
 llvm-${VER}.tar.gz:
