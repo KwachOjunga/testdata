@@ -36,7 +36,7 @@ llvm-${VER}.tar.gz:
 clean:
 	find test -type f -name '*.ll' | xargs -I '{}' $(RM) '{}'
 	find test -type d | xargs -I '{}' rmdir -p --ignore-fail-on-non-empty '{}'
-	$(RM) -R llvmorg-${VER}
-	$(RM) llvmorg-${VER}.tar.gz
+	$(RM) -R llvm-project-llvmorg-${VER}
+	$(RM) llvm-${VER}.tar.gz
 
 .PHONY: all fetch clean
