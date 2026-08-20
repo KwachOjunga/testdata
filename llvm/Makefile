@@ -19,8 +19,11 @@ prepare: llvm-${VER}.src
 fetch: llvm-${VER}.src
 
 llvm-${VER}.src: | llvm-${VER}.tar.gz
-	tar -xvf llvm-${VER}.tar.gz
-
+	if [ -d "llvm-project-llvmorg-${VER}" ]; then
+		echo "Folder found"
+	else
+		tar -xvf llvm-${VER}.tar.gz
+	fi
 
 llvm-${VER}.tar.gz:
 	if [ -f "./llvmorg-${VER}.tar.gz" ]; then
