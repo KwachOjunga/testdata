@@ -1,6 +1,6 @@
 # LLVM version.
 # TODO: update to use LLVM 15.0 (instead of rc1)
-VER=15.0.0rc1
+VER=22.1.8
 
 ROOT_DIR=$(shell pwd)
 
@@ -9,7 +9,7 @@ all: prepare
 # Copy *.ll test cases.
 .ONESHELL:
 prepare: llvm-${VER}.src
-	cd llvm-${VER}.src/test/
+	cd llvm-project-llvmorg-${VER}/llvm/test/
 	find . -type d | xargs -I '{}' mkdir -p '${ROOT_DIR}/test/{}'
 	find . -type f -name '*.ll' | xargs -I '{}' cp '{}' '${ROOT_DIR}/test/{}'
 	cd ${ROOT_DIR}
@@ -18,17 +18,22 @@ prepare: llvm-${VER}.src
 # Fetch source code.
 fetch: llvm-${VER}.src
 
-llvm-${VER}.src: | llvm-${VER}.src.tar.xz
-	tar -xJf llvm-${VER}.src.tar.xz
+llvm-${VER}.src: | llvm-${VER}.tar.gz
+	tar -xvf llvmorg-${VER}.tar.gz
 
-llvm-${VER}.src.tar.xz:
-	wget -O $@ "https://github.com/llvm/llvm-project/releases/download/llvmorg-${VER}/llvm-${VER}.src.tar.xz"
-	touch $@
 
+llvm-${VER}.tar.gz:
+	if [ -f "./llvmorg-${VER}.tar.gz" ]; then
+		echo "File exists"
+	else
+		echo "--------begin fetching--------"
+		wget -O $@ "https://github.com/llvm/llvm-project/archive/refs/tags/llvmorg-${VER}.tar.gz"
+	fi
+#
 clean:
 	find test -type f -name '*.ll' | xargs -I '{}' $(RM) '{}'
 	find test -type d | xargs -I '{}' rmdir -p --ignore-fail-on-non-empty '{}'
-	$(RM) -R llvm-${VER}.src
-	$(RM) llvm-${VER}.src.tar.xz
+	$(RM) -R llvmorg-${VER}
+	$(RM) llvmorg-${VER}.tar.gz
 
 .PHONY: all fetch clean
